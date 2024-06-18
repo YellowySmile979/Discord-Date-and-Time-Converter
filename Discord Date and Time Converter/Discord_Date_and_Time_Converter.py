@@ -3,6 +3,7 @@ from restricted_input import r_input
 from decimal import Decimal
 import datetime
 import time as gettime
+import colorama as colour
 
 class TimeTypes(Enum):
     SECONDS = 0
@@ -26,6 +27,7 @@ class TimeStampFormat(Enum):
     ShortTime = 5
     RelativeTime = 6
 
+#handles which format we want to use
 def ChooseFormat(timeStampFormat: str):
     chosenFormat : str = ''
 
@@ -46,7 +48,7 @@ def ChooseFormat(timeStampFormat: str):
     else:
         chosenFormat = 'error'
 
-    print('Chosen Format: {}'.format(chosenFormat))
+    print(colour.Fore.WHITE + '\nChosen Format: {}\n'.format(chosenFormat))
     return chosenFormat
 
 #ref for date timestamps
@@ -54,81 +56,92 @@ def ChooseFormat(timeStampFormat: str):
 #long date = :D, short date = :d
 #long time = :T, short time = :t
 #relative time = :R
+
+#forms the final timestamp for copying
 def FormTimeStamp(seconds : float, chosenFormat: str):
     timeStamp : str = ''
 
     if seconds == -1:
-        print('Invalid Time')
+        print(colour.Fore.RED + 'Invalid Time')
         return
     elif chosenFormat == 'error':
-        print('Invalid Format')
+        print(colour.Fore.RED + 'Invalid Format')
         return
     
     timeStamp = '<t:{}:{}>'.format(seconds, chosenFormat)
     return timeStamp
 
+#ensures user doesnt input something invalid
 def CheckMonthAndDay(month : int, day : int):
     isCorrect : bool = False
     if day < 1:
         isCorrect = False
-        print('You inputted no days.')
+        print(colour.Fore.RED + 'You inputted no days.')
     elif (month == 1 or month == 3 or month == 5 or month == 7 or month == 8 or month == 10 or month == 12) and day > 31:
         isCorrect = False
-        print('You inputted {} when this month ({}) has less than that date.'.format(day, month))
+        print(colour.Fore.RED + 'You inputted {} when this month ({}) has less than that date.'.format(day, month))
     elif month == 2 and day > 27:
         isCorrect = False
-        print('You inputted {} when this month ({}) has less than that date.'.format(day, month))
+        print(colour.Fore.RED + 'You inputted {} when this month ({}) has less than that date.'.format(day, month))
     elif (month == 4 or month == 6 or month == 9 or month == 11) and day > 30:
         isCorrect = False
-        print('You inputted {} when this month ({}) has less than that date.'.format(day, month))
+        print(colour.Fore.RED + 'You inputted {} when this month ({}) has less than that date.'.format(day, month))
     else:
         isCorrect = True
 
     return isCorrect
 
 def Main():
-    print('Welcome! Please choose your format. \nLong Date and Time: 0\nShort Date and Time: 1\nLong Date: 2\nShort Date: 3\nLong Time: 4\nShort Time: 5\nRelative Time: 6\n')
+    #appVersion, change accordingly
+    appVersion : str = '1.1.0'
+    print(colour.Fore.YELLOW + 'Discord Date and Time Converter\nCreated by Elijah Boey\nVersion {}\n'.format(appVersion))
+    print(colour.Fore.WHITE + '\nWelcome! To use, firstly, please choose your format.')
+    print(colour.Fore.LIGHTBLUE_EX + '\nLong Date and Time: 0\nShort Date and Time: 1\nLong Date: 2\nShort Date: 3\nLong Time: 4\nShort Time: 5\nRelative Time: 6\n')
     finalisedTimeStamp : str = ''
 
-    chosenFormat = float(r_input('Format: ', 'integer'))
+    chosenFormat = float(r_input(colour.Fore.WHITE + 'Format: ', 'integer'))
     
     time : float = 0.0
     time = Decimal(time)
 
+    #ensures that the chosen format is actually something within the bounds
     if float(chosenFormat) > 5:
-        print('That is NOT a valid number')
+        print(colour.Fore.RED + 'That is NOT a valid number')
         return
     elif float(chosenFormat) < 0:
-        print('That is NOT a valid number')
+        print(colour.Fore.RED + 'That is NOT a valid number')
         return
     
     format : str = ChooseFormat(TimeStampFormat(chosenFormat).name)
 
-    print('Please input the values according to the displayed text.')
-    year : int = int(r_input('Year: ', 'integer'))
-    month : int = int(r_input('Month: ', 'integer'))
-    day : int = int(r_input('Day: ', 'integer'))
-    hour : int = int(r_input('Hour (24-hour): ', 'integer'))
-    minute : int = int(r_input('Minute(s): ', 'integer'))
+    #inputs for the time and day
+    print(colour.Fore.LIGHTBLUE_EX + '\nNow, please input the values according to the displayed text.\n')
+    year : int = int(r_input(colour.Fore.WHITE + 'Year: ', 'integer'))
+    month : int = int(r_input(colour.Fore.WHITE + 'Month: ', 'integer'))
+    day : int = int(r_input(colour.Fore.WHITE + 'Day: ', 'integer'))
+    hour : int = int(r_input(colour.Fore.WHITE + 'Hour (24-hour): ', 'integer'))
+    minute : int = int(r_input(colour.Fore.WHITE + 'Minute(s): ', 'integer'))
 
+    #checks all these cases to ensure that the user inputs an actual valid date
     if year < 1970:
-        print('The date cannot be less than 1970!')
+        print(colour.Fore.RED + 'The date cannot be less than 1970!')
         return
     elif year == 1970 and month == 1 and day == 1 and hour < 8:
-        print('The date cannot be less than the Unix epoch!')
+        print(colour.Fore.RED + 'The date cannot be less than the Unix epoch!')
         return
     elif month > 12 or month < 1 or hour > 23 or minute > 59:
-        print('You inputted a month greater than 12 or lesser than 1, or an hour greater than 23 (24:00 is 00:00), or minute(s) greater than 59')
+        print(colour.Fore.RED + 'You inputted a month greater than 12 or lesser than 1, or an hour greater than 23 (24:00 is 00:00), or minute(s) greater than 59')
         return
     elif CheckMonthAndDay(month, day) == False:
         return
     else:
         date = datetime.datetime(year, month, day, hour, minute)
         time = gettime.mktime(date.timetuple())
-        print(time)
+        #print(time)
 
+    #forms the final timestamp for the user to copy and paste
     finalisedTimeStamp = FormTimeStamp(time, format)
-    print(finalisedTimeStamp)
+    print(colour.Fore.LIGHTBLUE_EX + '\nHighlight the text in the "<>" including "<>": ' + colour.Fore.WHITE + '{}'.format(finalisedTimeStamp))
     
 Main()
 #gettime.sleep(5)
