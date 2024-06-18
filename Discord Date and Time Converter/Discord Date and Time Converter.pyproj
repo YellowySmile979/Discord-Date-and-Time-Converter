@@ -23,7 +23,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Discord_Date_and_Time_Converter.py" />
-    <Compile Include="main.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
