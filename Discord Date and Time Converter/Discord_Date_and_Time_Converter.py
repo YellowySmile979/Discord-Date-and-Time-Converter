@@ -94,7 +94,7 @@ def CheckMonthAndDay(month : int, day : int):
 def Main():
     #appVersion, change accordingly
     appVersion : str = '1.1.0'
-    print(colour.Fore.YELLOW + 'Discord Date and Time Converter\nCreated by Elijah Boey\nVersion {}\n'.format(appVersion))
+    print(colour.Fore.YELLOW + 'Discord Date and Time Converter\nCreated by YellowySmile979\nVersion {}\n'.format(appVersion))
     print(colour.Fore.WHITE + '\nWelcome! To use, firstly, please choose your format.')
     print(colour.Fore.LIGHTBLUE_EX + '\nLong Date and Time: 0\nShort Date and Time: 1\nLong Date: 2\nShort Date: 3\nLong Time: 4\nShort Time: 5\nRelative Time: 6\n')
     finalisedTimeStamp : str = ''
