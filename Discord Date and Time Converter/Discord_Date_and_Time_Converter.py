@@ -4,6 +4,7 @@ from decimal import Decimal
 import datetime
 import time as gettime
 import colorama as colour
+import os
 
 class TimeTypes(Enum):
     SECONDS = 0
@@ -91,10 +92,22 @@ def CheckMonthAndDay(month : int, day : int):
 
     return isCorrect
 
-def Main():
+def ClearTerminal():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
     #appVersion, change accordingly
     appVersion : str = '1.1.0'
     print(colour.Fore.YELLOW + 'Discord Date and Time Converter\nCreated by YellowySmile979\nVersion {}\n'.format(appVersion))
+
+def Main():
+    #appVersion, change accordingly
+    # appVersion : str = '1.1.0'
+    # print(colour.Fore.YELLOW + 'Discord Date and Time Converter\nCreated by YellowySmile979\nVersion {}\n'.format(appVersion))
+    ClearTerminal()
+
     print(colour.Fore.WHITE + '\nWelcome! To use, firstly, please choose your format.')
     print(colour.Fore.LIGHTBLUE_EX + '\nLong Date and Time: 0\nShort Date and Time: 1\nLong Date: 2\nShort Date: 3\nLong Time: 4\nShort Time: 5\nRelative Time: 6\n')
     finalisedTimeStamp : str = ''
@@ -112,6 +125,7 @@ def Main():
         print(colour.Fore.RED + 'That is NOT a valid number')
         return
     
+    ClearTerminal()
     format : str = ChooseFormat(TimeStampFormat(chosenFormat).name)
 
     #inputs for the time and day
@@ -141,7 +155,10 @@ def Main():
 
     #forms the final timestamp for the user to copy and paste
     finalisedTimeStamp = FormTimeStamp(time, format)
-    print(colour.Fore.LIGHTBLUE_EX + '\nHighlight the text in the "<>" including "<>": ' + colour.Fore.WHITE + '{}'.format(finalisedTimeStamp))
+    
+    ClearTerminal()
+    print(colour.Fore.WHITE + '\nFormat: {}\nGiven Date and Time: {}'.format(format, date))
+    print(colour.Fore.LIGHTBLUE_EX + 'Highlight the text in the "<>" including "<>": ' + colour.Fore.WHITE + '{}'.format(finalisedTimeStamp))
     
 Main()
 #gettime.sleep(5)
