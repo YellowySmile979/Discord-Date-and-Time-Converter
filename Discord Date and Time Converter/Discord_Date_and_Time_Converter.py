@@ -5,6 +5,7 @@ import datetime
 import time as gettime
 import colorama as colour
 import os
+import math
 
 class TimeTypes(Enum):
     SECONDS = 0
@@ -69,7 +70,7 @@ def FormTimeStamp(seconds : float, chosenFormat: str):
         print(colour.Fore.RED + 'Invalid Format')
         return
     
-    timeStamp = '<t:{}:{}>'.format(seconds, chosenFormat)
+    timeStamp = '<t:{}:{}>'.format(math.trunc(seconds), chosenFormat)
     return timeStamp
 
 #ensures user doesnt input something invalid
@@ -118,7 +119,7 @@ def Main():
     time = Decimal(time)
 
     #ensures that the chosen format is actually something within the bounds
-    if float(chosenFormat) > 5:
+    if float(chosenFormat) > 6:
         print(colour.Fore.RED + 'That is NOT a valid number')
         return
     elif float(chosenFormat) < 0:
